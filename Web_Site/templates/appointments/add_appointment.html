@@ -1,0 +1,66 @@
+{% extends 'index.html' %} {% block content %}
+<!-- Main Content -->
+<!-- Page Title -->
+<div class="container mt-0">
+    <div class="row breadcrumb-bar">
+      <div class="col-md-6">
+        <h3 class="block-title">Randevü Ekle</h3>
+      </div>
+      <div class="col-md-6">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/">
+              <span class="ti-home"></span>
+            </a>
+          </li>
+          <li class="breadcrumb-item">Randevü</li>
+          <li class="breadcrumb-item active">Randevü Ekle</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+<!-- /Page Title -->
+<div class="container">
+    <div class="row">
+        <!-- Widget Item -->
+        <div class="col-md-12">
+            <div class="widget-area-2 proclinic-box-shadow">
+                <h3 class="widget-title">Randevü Ekle</h3>
+                <form method="post" action="{% url 'add_appointment' %}">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="donor_id">Bağışçı ID</label>
+                            <input type="text" class="form-control" placeholder="Bağışçı ID" id="donor_id" name="donor_id">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="appointment-date">Randevü Tarihi</label>
+                            <input type="date" placeholder="Appointment Date" class="form-control"
+                                id="appointment_date" name="appointment_date">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="time-slot">Saat Aralığı</label>
+                            <select class="form-control" id="time_slot" name="time_slot">
+                                <option>10AM-11AM</option>
+                                <option>11AM-12pm</option>
+                                <option>12PM-01PM</option>
+                                <option>2PM-3PM</option>
+                                <option>3PM-4PM</option>
+                                <option>4PM-5PM</option>
+                                <option>6PM-7PM</option>
+                                <option>7PM-8PM</option>
+                                <option>8PM-9PM</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6 mb-3">
+                            <button type="submit" class="btn btn-primary btn-lg">Gönder</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Widget Item -->
+    </div>
+</div>
+<!-- /Main Content -->
+{% endblock %}

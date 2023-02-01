@@ -1,0 +1,169 @@
+{% extends 'index.html' %} {% block content %}
+<div class="container mt-0">
+  <div class="row breadcrumb-bar">
+    <div class="col-md-6">
+      <h3 class="block-title">Bütün Bağışçılar</h3>
+    </div>
+    <div class="col-md-6">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/">
+            <span class="ti-home" href="/index"></span>
+          </a>
+        </li>
+        <li class="breadcrumb-item">Bağışçılar</li>
+        <li class="breadcrumb-item active">Bütün Bağışçılar</li>
+      </ol>
+    </div>
+  </div>
+</div>
+<!-- Main Content -->
+<div class="container">
+  <div class="row">
+    <!-- Widget Item -->
+    <div class="col-md-12">
+      <div class="widget-area-2 proclinic-box-shadow">
+        <h3 class="widget-title">Bağışçı Listesi</h3>
+        <div class="table-responsive mb-3">
+          <table id="tableId" class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th class="no-sort">
+                  <div class="custom-control custom-checkbox"></div>
+                </th>
+                <th>Sıra</th>
+                <th>Adı</th>
+                <th>Soyadı</th>
+                <th>Kimlik</th>
+                <th>Kilo</th>
+                <th>Boy</th>
+                <th>Cinsiyet</th>
+                <th>Kan Grubu</th>
+                <th>Telefon</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% csrf_token %} {% for item in donor %}
+              <tr id="{{ item.donor_id }}">
+                <td>
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      class="custom-control-input"
+                      type="checkbox"
+                      name="item_id[]"
+                      value="{{ item.id }}"
+                      id="delete_donor"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="delete_donor"
+                    ></label>
+                  </div>
+                </td>
+                <td>{{item.donor_id}}</td>
+                <td>{{item.donor_name}}</td>
+                <td>{{item.donor_surname}}</td>
+                <td>{{item.id_number}}</td>
+                <td>{{item.weight}}</td>
+                <td>{{item.height}}</td>
+                <td>{{item.gender}}</td>
+                <td>{{item.blood_type}}</td>
+                <td>{{item.phone}}</td>
+                <td>{{item.email}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <!--Export links-->
+          <!-- /Export links-->
+          <button
+            type="button"
+            id="delete_btn"
+            class="btn btn-danger mt-3 mb-0"
+          >
+            <span class="ti-trash"></span> DELETE
+          </button>
+          <button
+            type="submit"
+            id="edit_btn"
+            class="btn btn-primary mt-3 mb-0"
+            onclick="location.href='/patient/edit'"
+          >
+            <span class="ti-pencil-alt"></span> EDIT
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /Widget Item -->
+  </div>
+
+  <script>
+    $(document);
+  </script>
+</div>
+<!-- /Main Content -->
+<script
+  src="https://code.jquery.com/jquery-3.6.1.js"
+  integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+  crossorigin="anonymous"
+></script>
+<script>
+  $(document).ready(function () {
+    $("#delete_btn").click(function () {
+      if (confirm("Silmek istediğinize emin misiniz ?")) {
+        var id = [];
+        var csrf = $("input[name=csrfmiddlewaretoken]").val();
+        $(":checkbox:checked").each(function (i) {
+          id[i] = $(this).val();
+        });
+        if (id.length === 0) {
+          alert("Lütfen silmek istediğiniz kaydı seçin !");
+        } else {
+          console.log(id);
+          $.ajax({
+            url: "show",
+            method: "POST",
+            data: {
+              id,
+              csrfmiddlewaretoken: csrf,
+            },
+            success: function (response) {
+              for (var i = 0; i < id.length; i++) {
+                $("tr#" + id[i] + "").css("backround-color"),
+                  $("tr#" + id[i] + "").fadeOut("slow");
+              }
+            },
+          });
+        }
+      }
+    });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    $("#edit_btn").click(function () {
+      if (confirm("Düzenlemek İstediğinize Emin Misiniz ?")) {
+        var id = [];
+        var csrf = $("input[name=csrfmiddlewaretoken]").val();
+        $(":checkbox:checked").each(function (i) {
+          id[i] = $(this).val();
+        });
+        if (id.length === 0) {
+          alert("Lütfen Düzenlemek İstediğiniz Hastayı Seçin.");
+        } else {
+          console.log(id);
+          $.ajax({
+            url: "edit",
+            method: "POST",
+            data: {
+              id,
+              csrfmiddlewaretoken: csrf,
+            },
+          });
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}

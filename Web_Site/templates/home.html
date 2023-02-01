@@ -1,0 +1,162 @@
+{% extends 'index.html' %} {% block content %}
+
+<!-- Main Content -->
+<div class="container home">
+    <div class="row">
+        <!-- Widget Item -->
+        <div class="col-md-4">
+            <div class="widget-area proclinic-box-shadow color-red">
+                <div class="widget-left">
+                    <span class="ti-wheelchair"></span>
+                </div>
+                <div class="widget-right">
+                    <h4 class="wiget-title">Hastalar</h4>
+                    <span class="numeric color-red">{{patient_count}}</span>
+                </div>
+            </div>
+        </div>
+        <!-- /Widget Item -->
+        <!-- Widget Item -->
+        <div class="col-md-4">
+            <div class="widget-area proclinic-box-shadow color-yellow">
+                <div class="widget-left">
+                    <span class="ti-user"></span>
+                </div>
+                <div class="widget-right">
+                    <h4 class="wiget-title">Bağışçı</h4>
+                    <span class="numeric color-yellow">{{donor_count}}</span>
+                </div>
+            </div>
+        </div>
+        <!-- /Widget Item -->
+        <!-- Widget Item -->
+        <div class="col-md-4">
+            <div class="widget-area proclinic-box-shadow color-green">
+                <div class="widget-left">
+                    <span class="ti-pencil-alt"></span>
+                </div>
+                <div class="widget-right">
+                    <h4 class="wiget-title">Randevular</h4>
+                    <span class="numeric color-green">{{appointment_count}}</span>
+                </div>
+            </div>
+        </div>
+        <!-- /Widget Item -->
+    </div>
+    <div class="row">
+        <!-- Widget Item -->
+        <div class="col-md-6">
+            <div class="widget-area-2 box-shadow">
+                <h3 class="widget-title">Genel Donut Grafik</h3>
+                <div style="height: 255px">
+                    <canvas id="myChart2" ></canvas>
+                </div>              
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                    var ctx = document.getElementById('myChart2').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Hastalar', 'Bağışçılar', 'Randevular'],
+                            datasets: [{
+                                data: [{{patient_count}}, {{donor_count}}, {{appointment_count}}],
+                                backgroundColor: [
+                                    'rgba(255, 192, 203, 0.8)',
+                                    'rgba(255, 140, 0, 0.8)',
+                                    'rgba(255, 206, 86, 0.8)',
+                                ],
+                                borderColor: [
+                                    'rgba(255, 192, 203, 1)',
+                                    'rgba(255, 140, 0, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                ],
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                          }
+                    });
+                    </script> 
+            </div>
+        </div>
+        <!-- /Widget Item -->
+        <!-- Widget Item -->
+        <div class="col-md-6">
+            <div class="widget-area-2 box-shadow">
+                <h3 class="widget-title">Genel Bar Grafik</h3>
+                <div>
+                    <canvas id="myChart"></canvas>
+                </div>              
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Hastalar', 'Bağışçılar', 'Randevular'],
+                            datasets: [{
+                                data: [{{patient_count}}, {{donor_count}}, {{appointment_count}}],
+                                backgroundColor: [
+                                    'rgba(255, 192, 203, 0.8)',
+                                    'rgba(255, 140, 0, 0.8)',
+                                    'rgba(255, 206, 86, 0.8)',
+                                ],
+                                borderColor: [
+                                    'rgba(255, 192, 203, 1)',
+                                    'rgba(255, 140, 0, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                ],
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            plugins: {
+                               legend: {
+                                  display: false
+                               }
+                            }
+                          }
+                    });
+                    </script>                
+            </div>
+
+        </div>
+        <!-- /Widget Item -->
+    </div>
+
+    <div class="row">
+        <!-- Widget Item -->
+        <div class="col-md-12">
+            <div class="widget-area-2 proclinic-box-shadow">
+                <h3 class="widget-title">Randevular</h3>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Sıra</th>
+                                <th>Bağışçı ID</th>
+                                <th>Randevu Tarihi</th>
+                                <th>Saat Aralığı</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in appointment_list  %}
+                            <tr>
+                                <td>{{item.appointment_id}}</td>
+                                <td>{{item.donor_id}}</td>
+                                <td>{{item.appointment_date}}</td>
+                                <td>{{item.appointment_time}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /Widget Item -->
+    </div>
+</div>
+<!-- /Main Content -->
+{% endblock %}
